@@ -1,0 +1,12 @@
+{
+	"name": "darklight",
+	"description": "MVVM web tools for D - using vibe.d and DUB",
+	"homepage": "",
+	"copyright": "Copyright © 2013, Jean-Bernard Pellerin",
+	"authors": [
+		"Jean-Bernard Pellerin"
+	],
+	"dependencies": {
+		"vibe-d": ">=0.7.13"
+	}
+}
