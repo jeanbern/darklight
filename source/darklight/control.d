@@ -23,7 +23,6 @@ mixin template FactoryGen() {
 
 abstract class Control
 {
-	void delegate(Json json) setSelf;
 	Control parent;
 	string id;
 	string forceId() { static int s_id; if (id is null || id == "") id = format("%s",s_id++); return id; }
