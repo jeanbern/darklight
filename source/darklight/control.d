@@ -6,9 +6,6 @@ import std.algorithm : reduce;
 import std.string : format;
 import std.conv : to;
 import darklight.parse;
-import vibe.data.json;
-
-		import std.stdio : writeln;
 
 mixin template FactoryGen() {
 	import darklight.parse : parse_tag;
@@ -18,7 +15,6 @@ mixin template FactoryGen() {
 		{
 			enum Ty = parse_tag(_xml);
 			mixin("auto ret = "~Ty~".extract!(ControlFactory, _xml, "~Ty~")(viewModel, staticModel);");
-			//mixin("ret.setSelf = "~Ty~".setVars!(parse_attr(_xml))(viewModel, staticModel);");
 			return ret;
 		}
 	}
@@ -77,28 +73,10 @@ abstract class Control
 		mixin(assignstring(parse_attr(_xml)));
 		return self;
 	}
-	
-	/*static auto setVars(string _xml, T, U)(T viewModel, U staticModel)
-	{
-		void setRev(Json self)
-		{
-			pragma(msg, assignstring(_xml));
-			pragma(msg, reverseassign(_xml));
-			mixin(reverseassign(_xml));
-			writeln("-- ", _xml);
-			writeln("---", reverseassign(_xml));
-			//self.content = dst.data();
-		}
-		
-		return &setRev;
-	}*/
 }
 
 interface Container
 {
-	//This member represents the ability to use a tag type it is given (ex: by the parent).
-	//The lack of such a promise represents a guarantee that tagAttr() is not used and can freely be taken over by the parent.
-	//K, so, those promises aren't really promises. Keep this class and behaviour in mind though.
 	@property string containerTag();
 	@property void containerTag(string tag);
 }
