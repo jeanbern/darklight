@@ -47,7 +47,7 @@ mixin template FactoryGen() {
 			enum _xml = `	<Node>
 						<TextBlock text={{vm.someString}}/>
 					</Node>`;
-			SampleVM vm; vm.text = "hello world";
+			SampleVM vm; vm.someString = "hello world";
 			
 			auto ctrl = ControlFactory.Extract(_xml, vm, "");
 			writeln(ctrl.toString());
@@ -138,7 +138,7 @@ abstract class Control
 		}
 		
 		enum _xml = `<TextBlock text={{vm.someString}} id={{vm.getID()}}/>`;
-		SampleVM vm; vm.text = "hello world";
+		SampleVM vm; vm.someString = "hello world";
 		
 		auto ctrl = TextBlock.extract!(ControlFactory, TextBlock)(vm, "");
 		writeln(ctrl.toString());
@@ -251,9 +251,6 @@ abstract class IStackable(int I=0) : IContainer!(I)
 	This class expects one xml subcontrol, which will be repeated for each item in $(D list) which must be iterable with foreach.
 	The subcontrols will each receive one such list item as their $(D vm).
 	
-	Params:
-		I = Amount of subcontrols. 0 for variable.
-
 	Example:
 		---
 		mixin FactoryGen;
