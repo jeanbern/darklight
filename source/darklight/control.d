@@ -7,11 +7,8 @@
 */
 module darklight.control;
 
-import std.metastrings : Format;
-import std.array : join, replicate, appender;
 import std.algorithm : reduce;
 import std.string : format;
-import std.conv : to;
 import darklight.parse;
 
 /** 
@@ -144,7 +141,7 @@ abstract class Control
 		writeln(ctrl.toString());
 		---
 	*/
-	static auto extract(alias F, string _xml, ForwardRefT, T, U)(T viewModel, U staticModel)
+	static auto extract(alias F, string _xml, ForwardRefT : Control, T, U)(T viewModel, U staticModel)
 	{
 		//Create the object. This might give problems if there is no public parameterless constructor
 		ForwardRefT self = new ForwardRefT();
@@ -203,9 +200,7 @@ abstract class IContainer(int I=0) : Control, Container
 			}
 		}
 		
-		return format(`
-<`~this.containerTag~` %s>%s
-</`~this.containerTag~`>`, this.tagAttr(), content);
+		return `<`~this.containerTag~` `~this.tagAttr~`()>`~content~`</`~this.containerTag~`>`;
 	}
 }
 
@@ -217,7 +212,7 @@ abstract class IContainer(int I=0) : Control, Container
 */
 abstract class IStackable(int I=0) : IContainer!(I)
 {
-	static auto extract(alias F, string _xml, ForwardRefT, T, U)(T viewModel, U staticModel)
+	static auto extract(alias F, string _xml, ForwardRefT : Control, T, U)(T viewModel, U staticModel)
 	{
 		ForwardRefT self = new ForwardRefT();
 		mixin(assignstring(parse_attr(_xml)));
@@ -227,7 +222,7 @@ abstract class IStackable(int I=0) : IContainer!(I)
 		return self;
 	}
 	
-	static void Chain(alias F, alias inners, ForwardRefT, T, U)(ForwardRefT self, T viewModel, U staticModel)
+	static void Chain(alias F, alias inners, ForwardRefT : Control, T, U)(ForwardRefT self, T viewModel, U staticModel)
 	{
 		static if (inners.length > 0)
 		{
@@ -277,7 +272,7 @@ abstract class IStackable(int I=0) : IContainer!(I)
 */
 class ListPanel : IContainer!(0)
 {	
-	static auto extract(alias F, string _xml, ForwardRefT, T, U)(T viewModel, U staticModel)
+	static auto extract(alias F, string _xml, ForwardRefT : Control, T, U)(T viewModel, U staticModel)
 	{
 		ForwardRefT self = new ForwardRefT();
 		mixin(assignstringPlus(parse_attr(_xml),"list","null"));
