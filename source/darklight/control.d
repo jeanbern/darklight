@@ -65,7 +65,7 @@ mixin template FactoryGen() {
 abstract class Control
 {
 	string id;
-	string forceId() { static int s_id; if (id is null || id == "") id = format("%s",s_id++); return id; }
+	string forceId() { static int s_id; if (isNullOrEmpty(this.id)) id = format("%s",s_id++); return id; }
 	string content;
 	string style;
 	string clss;
